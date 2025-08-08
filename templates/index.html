@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection - AI-Powered MRI Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Brain Tumor Detection</h1>
+            </div>
+            <p class="subtitle">AI-Powered MRI Analysis for Early Detection</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <i class="fas fa-robot"></i>
+                <span>Model Status: 
+                    {% if model_loaded %}
+                        <span class="status-success"><i class="fas fa-check-circle"></i> Loaded</span>
+                    {% else %}
+                        <span class="status-error"><i class="fas fa-exclamation-triangle"></i> Not Available</span>
+                    {% endif %}
+                </span>
+            </div>
+            {% if model_info %}
+            <div class="status-item">
+                <i class="fas fa-info-circle"></i>
+                <span>Parameters: {{ "{:,}".format(model_info.total_params) }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Upload MRI Image</h3>
+                    <p>Drag and drop your MRI image here or click to browse</p>
+                    <p class="file-types">Supported: JPG, PNG, JPEG, GIF, BMP, TIFF</p>
+                    <p class="file-size">Max size: 16MB</p>
+                </div>
+                <form method="post" action="/upload" enctype="multipart/form-data" id="uploadForm">
+                    <input type="file" name="file" id="fileInput" accept="image/*" required>
+                </form>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Accurate Detection</h3>
+                <p>Advanced CNN model trained on thousands of MRI scans</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Fast Analysis</h3>
+                <p>Get results in seconds with real-time processing</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Confidence Scores</h3>
+                <p>Detailed confidence analysis for each prediction</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Brain Tumor Detection System. Built with TensorFlow & Flask.</p>
+            <div class="footer-links">
+                <a href="/model-info"><i class="fas fa-info-circle"></i> Model Info</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                uploadForm.submit();
+            }
+        });
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadForm.submit();
+            }
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

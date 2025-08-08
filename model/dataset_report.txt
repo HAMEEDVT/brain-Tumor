@@ -1,0 +1,16 @@
+BRAIN TUMOR DETECTION - DATASET REPORT
+==================================================
+
+Generated: 2025-08-07 21:39:47
+
+Total Images: 10
+Valid Images: 10
+Invalid Images: 0
+Validation Rate: 100.0%
+
+Category Distribution:
+  no: 5 images
+  yes: 5 images
+
+File Extensions:
+  .jpg: 10 files

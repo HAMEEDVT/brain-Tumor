@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Brain Tumor Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Page Not Found</h1>
+            </div>
+            <p class="subtitle">The page you're looking for doesn't exist</p>
+        </header>
+
+        <div class="error-container">
+            <div class="error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>404 - Page Not Found</h2>
+                <p>Sorry, the page you're looking for doesn't exist or has been moved.</p>
+                
+                <div class="error-details">
+                    <h3>What you can do:</h3>
+                    <ul>
+                        <li><i class="fas fa-home"></i> Go back to the <a href="/">home page</a></li>
+                        <li><i class="fas fa-upload"></i> Upload an MRI image for analysis</li>
+                        <li><i class="fas fa-info-circle"></i> Check the <a href="/model-info">model information</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="button primary">
+                <i class="fas fa-home"></i>
+                Go Home
+            </a>
+            <a href="/model-info" class="button secondary">
+                <i class="fas fa-info-circle"></i>
+                Model Info
+            </a>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Brain Tumor Detection System. Built with TensorFlow & Flask.</p>
+        </footer>
+    </div>
+</body>
+</html>

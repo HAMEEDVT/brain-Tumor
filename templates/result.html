@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - Brain Tumor Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Prediction Result</h1>
+            </div>
+            <p class="subtitle">Analysis completed at {{ timestamp }}</p>
+        </header>
+
+        <div class="result-container">
+            <div class="result-card">
+                <div class="result-header">
+                    <h2>
+                        <i class="fas fa-{{ 'check-circle' if result.predicted_class == 0 else 'exclamation-triangle' }}"></i>
+                        {{ result.predicted_label }}
+                    </h2>
+                    <div class="confidence-badge">
+                        <span class="confidence-score">{{ "%.1f"|format(result.confidence * 100) }}%</span>
+                        <span class="confidence-label">Confidence</span>
+                    </div>
+                </div>
+
+                <div class="image-section">
+                    <h3><i class="fas fa-image"></i> Uploaded MRI Image</h3>
+                    <div class="image-container">
+                        <img src="/static/uploads/{{ image_file }}" alt="Uploaded MRI" class="mri-image">
+                    </div>
+                </div>
+
+                {% if chart_img %}
+                <div class="chart-section">
+                    <h3><i class="fas fa-chart-bar"></i> Confidence Analysis</h3>
+                    <div class="chart-container">
+                        <img src="data:image/png;base64,{{ chart_img }}" alt="Confidence Chart" class="confidence-chart">
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="details-section">
+                    <h3><i class="fas fa-info-circle"></i> Detailed Results</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">No Tumor Confidence:</span>
+                            <span class="detail-value">{{ "%.3f"|format(result.no_tumor_confidence) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tumor Present Confidence:</span>
+                            <span class="detail-value">{{ "%.3f"|format(result.tumor_confidence) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Prediction Class:</span>
+                            <span class="detail-value">{{ result.predicted_class }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interpretation">
+                    <h3><i class="fas fa-lightbulb"></i> Interpretation</h3>
+                    {% if result.predicted_class == 0 %}
+                        <div class="interpretation-content positive">
+                            <p><strong>No tumor detected</strong> in the uploaded MRI image.</p>
+                            <p>The model is {{ "%.1f"|format(result.confidence * 100) }}% confident in this prediction.</p>
+                            <p><em>Note: This is an AI-assisted analysis. Always consult with a medical professional for final diagnosis.</em></p>
+                        </div>
+                    {% else %}
+                        <div class="interpretation-content warning">
+                            <p><strong>Tumor detected</strong> in the uploaded MRI image.</p>
+                            <p>The model is {{ "%.1f"|format(result.confidence * 100) }}% confident in this prediction.</p>
+                            <p><em>Important: This result requires immediate medical attention. Please consult with a healthcare professional.</em></p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="button primary">
+                <i class="fas fa-upload"></i>
+                Try Another Image
+            </a>
+            <a href="/model-info" class="button secondary">
+                <i class="fas fa-info-circle"></i>
+                Model Information
+            </a>
+        </div>
+
+        <div class="disclaimer">
+            <h4><i class="fas fa-exclamation-triangle"></i> Medical Disclaimer</h4>
+            <p>This AI system is designed to assist medical professionals and should not be used as a substitute for professional medical diagnosis. The results provided are for informational purposes only and should be interpreted by qualified healthcare professionals.</p>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Brain Tumor Detection System. Built with TensorFlow & Flask.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add animation to confidence badge
+        const confidenceBadge = document.querySelector('.confidence-badge');
+        if (confidenceBadge) {
+            confidenceBadge.style.animation = 'pulse 2s infinite';
+        }
+
+        // Auto-scroll to results
+        setTimeout(() => {
+            const resultCard = document.querySelector('.result-card');
+            if (resultCard) {
+                resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 500);
+    </script>
+</body>
+</html>
